@@ -17,7 +17,7 @@ const sendIngredient = () => {
   <div class="container">
     <form @submit.prevent="sendIngredient">
       <input
-        class="w-full px-8 py-4 mb-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
+        class="w-full mt-3 px-8 py-4 mb-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
         type="text"
         placeholder="Хліб, яйце"
         v-model="ingredient"
