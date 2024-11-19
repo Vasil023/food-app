@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useSearchRecipeStore } from "@/stores/searchRecipe";
+
 import recipeItem from "@/components/recipeItem.vue";
 
 const searchRecipeStore = useSearchRecipeStore();
@@ -24,13 +25,21 @@ const sendIngredient = () => {
       <button @click="translateIngredient" class="button">Пошук</button>
     </form>
 
-    <div v-if="searchRecipeStore.allRecipe" class="mt-7">
+    <div v-if="searchRecipeStore.allRecipe && !searchRecipeStore.isLoading" class="mt-7">
       <h2>Знайдені рецепти:</h2>
       <ul class="columns-2 lg:columns-4 lg:gap-3 gap-2 pt-3 pb-20">
         <li v-for="recipe in searchRecipeStore.allRecipe" :key="recipe.id">
           <recipeItem :item="recipe" />
         </li>
       </ul>
+    </div>
+
+    <div v-if="searchRecipeStore.isLoading">
+      <div class="grid place-items-center h-[calc(100vh-180px)]">
+        <div class="grid place-items-center gap-4">
+          <span class="pi pi-spin pi-spinner" style="font-size: 3rem; color: #5a382d"></span>
+        </div>
+      </div>
     </div>
     <!-- <p v-if="errorMessage" class="error">{{ errorMessage }}</p> -->
   </div>

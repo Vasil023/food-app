@@ -7,6 +7,15 @@ body {
   background: #fff;
 }
 
+img[lazy=loading] {
+  /*your style here*/
+  width: 100px;
+  // height: 100px;
+  filter: blur(8px);
+
+}
+
+
 input,
 textarea,
 select {

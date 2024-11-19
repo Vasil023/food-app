@@ -1,9 +1,12 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
+import lazyLoad from "@/utils/lazyLoad";
 
 const props = defineProps(["item"]);
 
 const recipeStore = useRecipeStore();
+
+defineExpose({ lazyLoad });
 
 const checkRecipe = async (id, isChecked) => {
   await recipeStore.checkItem(id, isChecked);
@@ -14,18 +17,20 @@ const checkRecipe = async (id, isChecked) => {
   <div class="break-inside-avoid mb-4 rounded-xl">
     <div class="w-full relative">
       <img
-        class="w-full rounded-xl object-fill"
-        :src="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
+        class="w-full rounded-xl object-fill min-w-[300px] min-h-[222px] lazy-image"
+        v-lazy="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
         alt="ui/ux review check"
       />
     </div>
 
     <div class="mt-1 pb-3 px-2">
       <p class="text-[13px] font-semibold">{{ props.item.title }}</p>
-      <p class="text-xs text-gray-500">{{ props.item?.description }}</p>
+      <p class="text-xs text-gray-500">
+        {{ props.item?.description ? props.item.description : props.item.title }}
+      </p>
     </div>
 
-    <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2">
+    <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2" v-if="props.item.point">
       <div class="flex items-center gap-1.5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,3 +54,17 @@ const checkRecipe = async (id, isChecked) => {
     </div>
   </div>
 </template>
+
+<style>
+.lazy-image {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.lazy-image[src] {
+  opacity: 1;
+}
+</style>
