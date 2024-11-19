@@ -8,6 +8,11 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+
+  build: {
+    outDir: 'dist', // Переконайтесь, що збірка йде у папку `dist`
+  },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
