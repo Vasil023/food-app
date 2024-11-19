@@ -13,10 +13,7 @@ const userStore = useUserStore();
         <p class="logo text-[#5a382d]">Nyama Dev</p>
       </div>
 
-      <div
-        class="flex items-center gap-1.5 absolute right-4"
-        v-if="userStore.isLoggedIn()"
-      >
+      <div class="flex items-center gap-1.5 absolute right-4" v-if="userStore.isLoggedIn()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

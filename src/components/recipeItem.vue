@@ -15,22 +15,17 @@ const checkRecipe = async (id, isChecked) => {
     <div class="w-full relative">
       <img
         class="w-full rounded-xl object-fill"
-        :src="
-          props.item.image ??
-          'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'
-        "
+        :src="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
         alt="ui/ux review check"
       />
     </div>
 
     <div class="mt-1 pb-3 px-2">
       <p class="text-[13px] font-semibold">{{ props.item.title }}</p>
-      <p class="text-xs text-gray-500">{{ props.item.description }}</p>
+      <p class="text-xs text-gray-500">{{ props.item?.description }}</p>
     </div>
 
-    <div
-      class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2"
-    >
+    <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2">
       <div class="flex items-center gap-1.5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,12 +42,8 @@ const checkRecipe = async (id, isChecked) => {
         {{ props.item.point }}
       </div>
       <span
-        :class="
-          props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'
-        "
-        @click="
-          checkRecipe(props.item._id, props.item.isChecked ? false : true)
-        "
+        :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
+        @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
         style="font-size: 1rem"
       ></span>
     </div>

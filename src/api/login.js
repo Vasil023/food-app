@@ -1,4 +1,4 @@
-import apiClient from "./axios";
+import { apiClient } from "./axios";
 
 const REGISTER = "/auth/register";
 const LOGIN = "/auth/login";
