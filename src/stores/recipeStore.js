@@ -5,13 +5,25 @@ export const useRecipeStore = defineStore('recipe', {
   state: () => ({
     allRecipe: [],
     isLoading: false,
+    error: null
   }),
 
   actions: {
     async createRecipe({ ...args }) {
+      this.isLoading = true
       try {
-        await createRecipe(args)
+        const response = await createRecipe(args)
+
+        // Перевірка помилок  
+        if (response.status === 400) {
+          this.error = response.response?.data;
+          this.isLoading = false;
+          return
+        }
+
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         this.error = error.response?.data?.message || 'Не вдалося створити рецепт'
       }
     },

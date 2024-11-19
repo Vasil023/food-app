@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
     async register(email, password, role) {
       this.isLoading = true
       try {
-        await register(email, password, role)
+        const response = await register(email, password, role)
 
         // Перевірка помилок  
         if (response.status === 400) {

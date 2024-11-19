@@ -10,7 +10,7 @@ export const createRecipe = async ({ ...args }) => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch products', error);
-    throw error;
+    return error;
   }
 };
 
@@ -20,7 +20,7 @@ export const getAllRecipe = async () => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch products', error);
-    throw error;
+    return error;
   }
 };
 
@@ -31,7 +31,7 @@ export const checkItem = async (id, isChecked) => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch products', error);
-    throw error;
+    return error;
   }
 };
 
