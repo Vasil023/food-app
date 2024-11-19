@@ -27,6 +27,12 @@ const routes = [
     name: 'check',
     component: () => import('../views/CheckedItems.vue'),
   },
+
+  {
+    path: '/search',
+    name: 'check',
+    component: () => import('../views/SearchRecipe.vue'),
+  },
 ]
 
 const router = createRouter({

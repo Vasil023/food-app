@@ -6,9 +6,7 @@ const recipeStore = useRecipeStore();
 
 <template>
   <nav class="fixed z-50 bottom-3 w-full">
-    <div
-      class="bg-[#5a382d] mx-auto w-[calc(100%-2rem)] lg:w-[500px] rounded-full px-7 py-3"
-    >
+    <div class="bg-[#5a382d] mx-auto w-[calc(100%-2rem)] lg:w-[500px] rounded-full px-7 py-3">
       <div class="flex justify-between items-center max-w-screen-sm m-auto">
         <router-link to="/">
           <span class="pi pi-home" style="font-size: 1.4rem; color: #fff"></span
@@ -64,16 +62,12 @@ const recipeStore = useRecipeStore();
           </div>
         </router-link>
         <router-link to="/create">
-          <span
-            class="pi pi-plus"
-            style="font-size: 1.4rem; color: #fff"
-          ></span>
+          <span class="pi pi-plus" style="font-size: 1.4rem; color: #fff"></span>
         </router-link>
 
-        <span
-          class="pi pi-receipt"
-          style="font-size: 1.4rem; color: #fff"
-        ></span>
+        <router-link to="/search">
+          <span class="pi pi-receipt" style="font-size: 1.4rem; color: #fff"></span>
+        </router-link>
         <span class="pi pi-user" style="font-size: 1.4rem; color: #fff"></span>
       </div>
     </div>

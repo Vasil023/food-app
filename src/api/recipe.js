@@ -1,4 +1,4 @@
-import apiClient from "./axios";
+import { apiClient } from "./axios";
 
 const NAME = "recipes/get-all";
 const CREATE = "recipes/create";
