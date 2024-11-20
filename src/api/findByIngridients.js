@@ -1,28 +1,11 @@
-import { apiFindIngredients, translateClient } from "./axios";
-
-const translateIngredient = async (ingredient) => {
-  try {
-    const response = await translateClient.post(`${import.meta.env.VITE_API_URL_TRANSLATE}key=${import.meta.env.VITE_TRANSLATE_API_KEY}`,
-
-      {
-        q: ingredient,
-        source: "uk",
-        target: "en",
-        format: "text",
-      }
-    );
-    return response.data.data.translations[0].translatedText;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
+import { apiFindIngredients } from "./axios";
+import { translateText } from "@/utils/translate";
 
 export const findByIngridients = async (ingridients) => {
-  const translatedIngredient = await translateIngredient(ingridients);
-  console.log('translatedIngredient', translatedIngredient);
+  const translatedIngredient = await translateText(ingridients, "uk", "en");
+
   try {
-    const response = await apiFindIngredients.get(`?ingredients=${translatedIngredient}&apiKey=a090bf50a6714a89a85dff9f385215ff&number=50`);
+    const response = await apiFindIngredients.get(`findByIngredients?ingredients=${translatedIngredient}&apiKey=a090bf50a6714a89a85dff9f385215ff&number=50`);
     console.log('response', response);
     return response.data;
   } catch (error) {
@@ -30,3 +13,13 @@ export const findByIngridients = async (ingridients) => {
     return error;
   }
 };
+
+export const getRecipeById = async (id) => {
+  try {
+    const response = await apiFindIngredients.get(`${id}/information?apiKey=a090bf50a6714a89a85dff9f385215ff`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch products', error);
+    return error;
+  }
+}

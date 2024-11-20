@@ -6,6 +6,7 @@ import router from './router'
 import Vue3Toastify from "vue3-toastify";
 import VueLazyload from 'vue-lazyload'
 
+import './registerServiceWorker'
 
 import "./assets/main.scss"
 import 'primeicons/primeicons.css'

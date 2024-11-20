@@ -12,9 +12,7 @@ img[lazy=loading] {
   width: 100px;
   // height: 100px;
   filter: blur(8px);
-
 }
-
 
 input,
 textarea,
@@ -57,4 +55,9 @@ textarea {
     height: 0.1px;
     position: absolute;
   }
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 30px;
 }
