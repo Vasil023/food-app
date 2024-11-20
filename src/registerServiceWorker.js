@@ -3,7 +3,7 @@
 import { register } from "register-service-worker";
 
 if (import.meta.env.PROD) {
-  register(`${import.meta.env.VITE_API_URL}registerSW.js`, {
+  register(`${import.meta.env.VITE_BASE_URL}registerSW.js`, {
     offline() {
       console.log("App is now offline");
     },
