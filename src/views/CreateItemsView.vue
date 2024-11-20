@@ -58,6 +58,7 @@ const createRecipe = async (data) => {
 
   if (recipeStore.error) {
     error.value = recipeStore.error;
+    console.log("error", error.value);
   } else {
     route.push("/");
   }

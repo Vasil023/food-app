@@ -11,6 +11,7 @@ export const useRecipeStore = defineStore('recipe', {
   actions: {
     async createRecipe({ ...args }) {
       this.isLoading = true
+      this.error = null
       try {
         const response = await createRecipe(args)
 
