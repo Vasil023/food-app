@@ -57,12 +57,6 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // logout() {
-    //   this.token = null
-    //   this.user = null
-    //   localStorage.removeItem('token')
-    // },
-
     isLoggedIn() {
       return !!this.token
     }
