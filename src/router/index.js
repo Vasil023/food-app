@@ -30,9 +30,16 @@ const routes = [
 
   {
     path: '/search',
-    name: 'check',
+    name: 'search',
     component: () => import('../views/SearchRecipe.vue'),
   },
+
+  {
+    path: '/search/:id',
+    name: 'SearchWithID',
+    component: () => import('../views/ResulSearchRecipeId.vue'),
+  },
+
 ]
 
 const router = createRouter({

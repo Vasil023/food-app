@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { findByIngridients } from "@/api/findByIngridients"
+import { findByIngridients, getRecipeById } from "@/api/findByIngridients"
 
 export const useSearchRecipeStore = defineStore('search', {
   state: () => ({
     allRecipe: [],
+    resulSearch: null,
     isLoading: false,
     error: null
   }),
@@ -23,9 +24,14 @@ export const useSearchRecipeStore = defineStore('search', {
       }
     },
 
-
-
-
-
+    async fethRecipeById(id) {
+      try {
+        const response = await getRecipeById(id)
+        console.log('response', response);
+        this.resulSearch = response
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
   }
 })

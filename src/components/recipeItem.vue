@@ -12,19 +12,21 @@ const checkRecipe = async (id, isChecked) => {
 
 <template>
   <div class="break-inside-avoid mb-4 rounded-xl">
-    <div class="w-full relative">
-      <img
-        loading="lazy"
-        class="w-full rounded-xl object-fill max-w-[300px]"
-        :src="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
-        alt="ui/ux review check"
-      />
-    </div>
+    <router-link :to="`/search/${item.id}`">
+      <div class="w-full relative">
+        <img
+          loading="lazy"
+          class="w-full rounded-xl object-fill max-w-[300px]"
+          :src="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
+          alt="ui/ux review check"
+        />
+      </div>
 
-    <div class="mt-1 pb-3 px-2">
-      <p class="text-[13px] font-semibold">{{ props.item.title }}</p>
-      <p class="text-xs text-gray-500">{{ props.item.description }}</p>
-    </div>
+      <div class="mt-1 pb-3 px-2">
+        <p class="text-[13px] font-semibold">{{ props.item.title }}</p>
+        <p class="text-xs text-gray-500">{{ props.item.description }}</p>
+      </div>
+    </router-link>
 
     <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2">
       <div class="flex items-center gap-1.5">

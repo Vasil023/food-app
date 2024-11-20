@@ -1,12 +1,34 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useSearchRecipeStore } from "@/stores/searchRecipe";
-
+import { useRoute, useRouter } from "vue-router";
 import recipeItem from "@/components/recipeItem.vue";
 
 const searchRecipeStore = useSearchRecipeStore();
 
+const route = useRoute();
+const router = useRouter();
+
 const ingredient = ref("");
+
+// Синхронізація інпуту з URL
+onMounted(() => {
+  const queryIngredient = route.query.ingredient || "";
+  ingredient.value = queryIngredient;
+  if (queryIngredient) {
+    searchRecipeStore.searchRecipe(queryIngredient);
+  }
+});
+
+// Слідкуємо за зміною значення інпуту
+watch(ingredient, (newValue) => {
+  router.push({
+    query: {
+      ...route.query,
+      ingredient: newValue || undefined, // Видаляємо параметр, якщо він пустий
+    },
+  });
+});
 
 const sendIngredient = () => {
   searchRecipeStore.searchRecipe(ingredient.value);
@@ -22,10 +44,10 @@ const sendIngredient = () => {
         placeholder="Хліб, яйце"
         v-model="ingredient"
       />
-      <button @click="translateIngredient" class="button">Пошук</button>
+      <button class="button">Пошук</button>
     </form>
 
-    <div v-if="searchRecipeStore.allRecipe && !searchRecipeStore.isLoading" class="mt-7">
+    <div v-if="searchRecipeStore.allRecipe.length && !searchRecipeStore.isLoading" class="mt-7">
       <h2>Знайдені рецепти:</h2>
       <ul class="columns-2 lg:columns-4 lg:gap-3 gap-2 pt-3 pb-20">
         <li v-for="recipe in searchRecipeStore.allRecipe" :key="recipe.id">
@@ -41,6 +63,5 @@ const sendIngredient = () => {
         </div>
       </div>
     </div>
-    <!-- <p v-if="errorMessage" class="error">{{ errorMessage }}</p> -->
   </div>
 </template>
