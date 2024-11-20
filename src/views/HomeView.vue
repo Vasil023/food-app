@@ -17,7 +17,7 @@ onMounted(() => {
       class="columns-2 lg:columns-5 lg:gap-3 gap-2 pt-1 pb-20"
       v-if="recipeStore.allRecipe && !recipeStore.isLoading"
     >
-      <recipeItem v-for="item in recipeStore.allRecipe" :item="item" :key="item._id" />
+      <recipeItem v-for="item in recipeStore.allRecipe.reverse()" :item="item" :key="item._id" />
     </div>
 
     <div class="grid place-items-center h-screen" v-if="!recipeStore.allRecipe && recipeStore.isLoading">
