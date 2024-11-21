@@ -66,7 +66,7 @@ const recipeStore = useRecipeStore();
         </router-link>
 
         <router-link to="/search">
-          <span class="pi pi-receipt" style="font-size: 1.4rem; color: #fff"></span>
+          <span class="pi pi-search" style="font-size: 1.4rem; color: #fff"></span>
         </router-link>
         <span class="pi pi-user" style="font-size: 1.4rem; color: #fff"></span>
       </div>

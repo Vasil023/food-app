@@ -2,6 +2,7 @@ import { apiClient } from "./axios";
 
 const REGISTER = "/auth/register";
 const LOGIN = "/auth/login";
+const UPDATE = "/auth/update-point";
 
 export const register = async (email, password, role) => {
   try {
@@ -16,6 +17,16 @@ export const register = async (email, password, role) => {
 export const login = async (email, password) => {
   try {
     const response = await apiClient.post(LOGIN, { email, password });
+    return response?.data;
+  } catch (error) {
+    console.log('Failed to fetch products', error);
+    return error
+  }
+};
+
+export const updatePoint = async (id, point) => {
+  try {
+    const response = await apiClient.put(`/${UPDATE}/${id}`, { id, point });
     return response?.data;
   } catch (error) {
     console.log('Failed to fetch products', error);

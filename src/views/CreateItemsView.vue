@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useRecipeStore } from "@/stores/recipeStore";
+import { useUserStore } from "@/stores/userStore";
 
 // Оголошення змінних
 const title = ref("");
@@ -14,6 +15,7 @@ const error = ref(null);
 // const imageUrl = ref('')
 
 const recipeStore = useRecipeStore();
+const userStore = useUserStore();
 
 const route = useRouter();
 
@@ -36,6 +38,7 @@ const createRecipes = async () => {
     isDone: false,
     isCooking: false,
     isChecked: false,
+    user: userStore.userId,
   };
 
   if (image.value) {

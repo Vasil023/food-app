@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
-import { login, register } from '@/api/login'
+import { login, register, updatePoint } from '@/api/user'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     userId: localStorage.getItem('userId') || null,
+    points: null,
     error: null,
     isLoading: false
   }),
@@ -48,12 +49,21 @@ export const useUserStore = defineStore('user', {
         localStorage.setItem('userId', response?.userId);
 
         this.token = response?.token;
-        this.user = response?.email;
+        this.userId = response?.userId;
+        this.points = response?.point;
         this.isLoading = false;
       } catch (error) {
         console.error('Помилка:', error);
         this.error = 'Виникла помилка з’єднання. Спробуйте ще раз.';
         this.isLoading = false;
+      }
+    },
+
+    async fetchUpdatedPoints(point) {
+      try {
+        await updatePoint(this.userId, point)
+      } catch (error) {
+        console.log('error', error);
       }
     },
 

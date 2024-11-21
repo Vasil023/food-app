@@ -1,8 +1,7 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useUserStore } from "@/stores/userStore";
-import { toast } from "vue3-toastify";
-import { translateText } from "@/utils/translate";
+// import { toast } from "vue3-toastify";
 
 const props = defineProps(["item"]);
 
@@ -13,17 +12,8 @@ const checkRecipe = async (id, isChecked) => {
   await recipeStore.checkItem(id, isChecked);
 };
 
-const addedRecipe = async (id, title, image) => {
-  const translated = await translateText(title, "en", "uk");
-
-  await recipeStore
-    .createRecipe({ id, title: translated, image, user: userStore.userId })
-    .then(() => {
-      toast.success("Рецепт успішно додано");
-    })
-    .catch(() => {
-      toast.error("Не вдалося додати рецепт");
-    });
+const updatePoint = async (point) => {
+  await userStore.fetchUpdatedPoints(point);
 };
 </script>
 
@@ -61,20 +51,20 @@ const addedRecipe = async (id, title, image) => {
         </svg>
         {{ props.item.point }}
       </div>
-      <span
-        v-if="props.item.point"
-        :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
-        @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
-        style="font-size: 1rem"
-      ></span>
-      <span
-        v-else
-        class="pi pi-plus"
-        @click="addedRecipe(props.item.id, props.item.title, props.item.image)"
-        style="font-size: 1rem"
-      ></span>
+      <div class="flex items-center gap-6">
+        <span
+          v-if="props.item.point"
+          :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
+          @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
+          style="font-size: 1rem"
+        ></span>
+        <span
+          class="pi pi-check cursor-pointer"
+          style="font-size: 1.3rem; color: #5a382d"
+          @click="updatePoint(props.item.point)"
+        >
+        </span>
+      </div>
     </div>
-
-    <div v-if="props.item.isChecked">ff</div>
   </div>
 </template>

@@ -30,13 +30,13 @@ onMounted(() => {
           alt="Image"
         />
       </div>
-      <div v-html="searchRecipeStore.resulSearch.summary"></div>
+      <div v-html="searchRecipeStore.resulSearch.translateText"></div>
 
       <div class="mt-4">
         <h3>Кроки</h3>
         <ol class="grid gap-3 mt-3">
-          <li v-for="item in searchRecipeStore.resulSearch?.analyzedInstructions[0]?.steps" :key="item.id">
-            {{ item.step }}
+          <li v-for="item in searchRecipeStore.resulSearch.steps" :key="item.id">
+            {{ item }}
           </li>
         </ol>
       </div>

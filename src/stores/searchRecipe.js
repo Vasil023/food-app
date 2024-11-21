@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { findByIngridients, getRecipeById } from "@/api/findByIngridients"
+import { translateText } from "@/utils/translate"
 
 export const useSearchRecipeStore = defineStore('search', {
   state: () => ({
@@ -27,8 +28,18 @@ export const useSearchRecipeStore = defineStore('search', {
     async fethRecipeById(id) {
       try {
         const response = await getRecipeById(id)
-        console.log('response', response);
-        this.resulSearch = response
+        const translatedSummary = await translateText(response.summary, "en", "uk");
+        const translatedSteps = await Promise.all(
+          response.analyzedInstructions[0].steps.map(async (step) => {
+            return await translateText(step.step, "en", "uk");
+          })
+        );
+
+        this.resulSearch = {
+          translateText: translatedSummary,
+          steps: translatedSteps,
+          image: response.image,
+        }
       } catch (error) {
         console.log('error', error);
       }
