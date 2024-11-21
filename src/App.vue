@@ -10,7 +10,7 @@ const userStore = useUserStore();
   <div>
     <div class="flex items-center justify-around px-3 relative">
       <div class="flex-1 text-center">
-        <p class="logo text-[#5a382d]">Nyama dev</p>
+        <p class="logo text-[#5a382d]">Nyama</p>
       </div>
 
       <div class="flex items-center gap-1.5 absolute right-4" v-if="userStore.isLoggedIn()">
