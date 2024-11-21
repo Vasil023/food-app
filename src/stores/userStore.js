@@ -76,13 +76,13 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async fetchUpdatedPoints(point, id) {
+    async fetchUpdatedPoints(id, point, userId) {
       try {
-        const response = await updatePoint(this.userId, point)
+        const response = await updatePoint(point, userId)
 
         useRecipeStore().toggleRecipeCheckStatus(id, false)
 
-        this.points = response?.user?.point
+        // this.points = response?.user?.point
 
         localStorage.setItem('point', response?.user?.point);
 

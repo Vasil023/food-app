@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllRecipe, createRecipe, updateRecipeCheckStatus } from '@/api/recipe'
+import { getAllRecipe, createRecipe, updateRecipe } from '@/api/recipe'
 
 export const useRecipeStore = defineStore('recipe', {
   state: () => ({
@@ -31,27 +31,33 @@ export const useRecipeStore = defineStore('recipe', {
     },
 
     // Оновити статус перевірки рецепта
-    async toggleRecipeCheckStatus(recipeId, isChecked) {
+    async toggleRecipeCheckStatus(recipeId, fields) {
       try {
-        const response = await updateRecipeCheckStatus(recipeId, isChecked)
+        console.log('fields', fields);
+
+        // Оновлюємо рецепт через сервер
+        const response = await updateRecipe(recipeId, fields);
+
+        console.log('response', response);
 
         if (!response) {
-          this.error = 'Failed to update recipe status'
-          return
+          this.error = 'Failed to update recipe status';
+          return;
         }
 
-        this.recipes.map((recipe) => {
-          if (recipe._id === recipeId) {
-            recipe.isChecked = response.recipe.isChecked
-          }
-          return recipe
-        })
+        // Оновлюємо рецепт в масиві по ID
+        const recipeIndex = this.recipes.findIndex((recipe) => recipe._id === recipeId);
+        if (recipeIndex !== -1) {
+          // Оновлюємо рецепт на основі відповіді від сервера
+          this.recipes[recipeIndex] = response.recipe; // Заміщаємо старий рецепт на оновлений
+        }
 
-        // const recipe = this.recipes.find((recipe) => recipe._id === recipeId)
-        // if (recipe) recipe.isChecked = response.data.recipe.isChecked
+        // Перевірка, чи рецепт було знайдено та оновлено
+        const updatedRecipe = this.recipes.find((recipe) => recipe._id === recipeId);
+        console.log('updatedRecipe', updatedRecipe);
 
       } catch (error) {
-        this.error = error?.response?.data?.message || 'An error occurred while updating recipe status'
+        this.error = error?.response?.data?.message || 'An error occurred while updating recipe status';
       }
     },
 
