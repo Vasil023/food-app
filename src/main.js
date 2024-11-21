@@ -23,7 +23,7 @@ app.use(VueLazyload, {
 })
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+  navigator.serviceWorker.register("./registerServiceWorker.js").then((registration) => {
     registration.onupdatefound = () => {
       const installingWorker = registration.installing;
       installingWorker.onstatechange = () => {
@@ -39,7 +39,6 @@ if ("serviceWorker" in navigator) {
     };
   });
 }
-
 
 
 app.use(createPinia())
