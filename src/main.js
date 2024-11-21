@@ -23,7 +23,7 @@ app.use(VueLazyload, {
 })
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./registerServiceWorker.js").then((registration) => {
+  navigator.serviceWorker.register("/registerSW.js").then((registration) => {
     registration.onupdatefound = () => {
       const installingWorker = registration.installing;
       installingWorker.onstatechange = () => {
