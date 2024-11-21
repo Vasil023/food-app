@@ -57,7 +57,7 @@ const createRecipes = async () => {
 // Функція реєстрації
 const createRecipe = async (data) => {
   error.value = null;
-  await recipeStore.createRecipe(data);
+  await recipeStore.addRecipe(data);
 
   if (recipeStore.error) {
     error.value = recipeStore.error;
