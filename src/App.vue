@@ -1,9 +1,19 @@
 <script setup>
+import { onMounted } from "vue";
 import { RouterView } from "vue-router";
 import TheNavBar from "./components/TheNavBar.vue";
 import { useUserStore } from "./stores/userStore";
+import { useRecipeStore } from "@/stores/recipeStore";
 
 const userStore = useUserStore();
+const recipeStore = useRecipeStore();
+
+onMounted(() => {
+  if (userStore.isLoggedIn()) {
+    userStore.getUser();
+    recipeStore.fetchAllRecipes();
+  }
+});
 </script>
 
 <template>

@@ -9,16 +9,16 @@ const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
 const checkRecipe = async (id, isChecked) => {
-  await recipeStore.checkItem(id, isChecked);
+  await recipeStore.toggleRecipeCheckStatus(id, isChecked);
 };
 
-const updatePoint = async (point) => {
-  await userStore.fetchUpdatedPoints(point);
+const updatePoint = async (point, id) => {
+  await userStore.fetchUpdatedPoints(point, id);
 };
 </script>
 
 <template>
-  <div class="break-inside-avoid mb-4 rounded-xl">
+  <div class="break-inside-avoid mb-4 rounded-xl border pb-3">
     <router-link :to="`/search/${item.id ? item.id : ''}`">
       <div class="w-full relative">
         <img
@@ -35,7 +35,7 @@ const updatePoint = async (point) => {
       </div>
     </router-link>
 
-    <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2">
+    <div class="text-blue-gray-900 antialiased text-[13px] flex justify-between px-2 pb-5">
       <div class="flex items-center gap-1.5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -52,19 +52,25 @@ const updatePoint = async (point) => {
         {{ props.item.point }}
       </div>
       <div class="flex items-center gap-6">
-        <span
+        <!-- <span
           v-if="props.item.point"
           :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
-          @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
+          
           style="font-size: 1rem"
-        ></span>
-        <span
-          class="pi pi-check cursor-pointer"
-          style="font-size: 1.3rem; color: #5a382d"
-          @click="updatePoint(props.item.point)"
-        >
-        </span>
+        ></span> -->
       </div>
+    </div>
+
+    <div class="flex justify-between pt-4 px-2 border-t">
+      <span @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
+      </span>
+
+      <span
+        class="pi pi-check cursor-pointer"
+        style="font-size: 1.3rem; color: #5a382d"
+        @click="updatePoint(props.item.point, props.item._id)"
+      >
+      </span>
     </div>
   </div>
 </template>

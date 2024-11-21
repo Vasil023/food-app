@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
-import { login, register, updatePoint } from '@/api/user'
+import { login, register, updatePoint, getUser } from '@/api/user'
+import { useRecipeStore } from '@/stores/recipeStore'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     userId: localStorage.getItem('userId') || null,
-    points: null,
+    points: localStorage.getItem('point') || null,
+    email: null,
     error: null,
     isLoading: false
   }),
@@ -37,7 +39,7 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await login(email, password);
-
+        console.log('response', response);
         // Перевірка помилок  
         if (response.status === 400) {
           this.error = response.response?.data;
@@ -47,11 +49,16 @@ export const useUserStore = defineStore('user', {
 
         localStorage.setItem('token', response?.token);
         localStorage.setItem('userId', response?.userId);
+        localStorage.setItem('point', response?.point);
 
         this.token = response?.token;
         this.userId = response?.userId;
         this.points = response?.point;
+        this.email = response?.email
+
         this.isLoading = false;
+
+        useRecipeStore().fetchAllRecipes()
       } catch (error) {
         console.error('Помилка:', error);
         this.error = 'Виникла помилка з’єднання. Спробуйте ще раз.';
@@ -59,9 +66,26 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async fetchUpdatedPoints(point) {
+    async getUser() {
       try {
-        await updatePoint(this.userId, point)
+        const response = await getUser(this.userId)
+        this.points = response?.point
+        this.email = response?.email
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+
+    async fetchUpdatedPoints(point, id) {
+      try {
+        const response = await updatePoint(this.userId, point)
+
+        useRecipeStore().toggleRecipeCheckStatus(id, false)
+
+        this.points = response?.user?.point
+
+        localStorage.setItem('point', response?.user?.point);
+
       } catch (error) {
         console.log('error', error);
       }
@@ -69,7 +93,15 @@ export const useUserStore = defineStore('user', {
 
     isLoggedIn() {
       return !!this.token
-    }
+    },
 
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('point')
+      this.token = null
+      this.userId = null
+      this.points = null
+    }
   },
 })

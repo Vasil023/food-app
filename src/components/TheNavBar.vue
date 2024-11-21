@@ -11,6 +11,7 @@ const recipeStore = useRecipeStore();
         <router-link to="/">
           <span class="pi pi-home" style="font-size: 1.4rem; color: #fff"></span
         ></router-link>
+
         <router-link to="/checked" class="relative">
           <!-- <span
             class="pi pi-sparkles"
@@ -56,11 +57,12 @@ const recipeStore = useRecipeStore();
 
           <div
             class="absolute top-[-10px] right-[-15px] bg-red-500 rounded-full text-white size-5 grid place-items-center text-[10px]"
-            v-if="recipeStore.getCheckedRecipe.length"
+            v-if="recipeStore.checkedRecipes.length"
           >
-            {{ recipeStore.getCheckedRecipe.length }}
+            {{ recipeStore.checkedRecipes.length }}
           </div>
         </router-link>
+
         <router-link to="/create">
           <span class="pi pi-plus" style="font-size: 1.4rem; color: #fff"></span>
         </router-link>
@@ -68,7 +70,10 @@ const recipeStore = useRecipeStore();
         <router-link to="/search">
           <span class="pi pi-search" style="font-size: 1.4rem; color: #fff"></span>
         </router-link>
-        <span class="pi pi-user" style="font-size: 1.4rem; color: #fff"></span>
+
+        <router-link to="/profile">
+          <span class="pi pi-user" style="font-size: 1.4rem; color: #fff"></span>
+        </router-link>
       </div>
     </div>
   </nav>

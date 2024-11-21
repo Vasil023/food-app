@@ -24,7 +24,7 @@ export const getAllRecipe = async () => {
   }
 };
 
-export const checkItem = async (id, isChecked) => {
+export const updateRecipeCheckStatus = async (id, isChecked) => {
   try {
     const response = await apiClient.put(`${UPDATE}/${id}`, { isChecked: isChecked });
     return response.data;

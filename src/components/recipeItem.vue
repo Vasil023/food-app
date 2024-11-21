@@ -10,14 +10,14 @@ const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
 const checkRecipe = async (id, isChecked) => {
-  await recipeStore.checkItem(id, isChecked);
+  await recipeStore.toggleRecipeCheckStatus(id, isChecked);
 };
 
 const addedRecipe = async (id, title, image) => {
   const translated = await translateText(title, "en", "uk");
 
   await recipeStore
-    .createRecipe({ id, title: translated, image, user: userStore.userId })
+    .addRecipe({ id, title: translated, image, user: userStore.userId })
     .then(() => {
       toast.success("Рецепт успішно додано");
     })
@@ -74,7 +74,5 @@ const addedRecipe = async (id, title, image) => {
         style="font-size: 1rem"
       ></span>
     </div>
-
-    <div v-if="props.item.isChecked">ff</div>
   </div>
 </template>

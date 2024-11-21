@@ -8,11 +8,8 @@ const recipeStore = useRecipeStore();
 <template>
   <div>
     <div class="container">
-      <div
-        class="columns-2 lg:columns-5 lg:gap-3 gap-2 pt-1 pb-20"
-        v-if="recipeStore.getCheckedRecipe.length"
-      >
-        <CheckRecipe v-for="item in recipeStore.getCheckedRecipe" :item="item" :key="item._id" />
+      <div class="columns-2 lg:columns-5 lg:gap-3 gap-2 pt-1 pb-20" v-if="recipeStore.checkedRecipes.length">
+        <CheckRecipe v-for="item in recipeStore.checkedRecipes" :item="item" :key="item._id" />
       </div>
       <div class="grid place-items-center h-[calc(100vh-180px)]" v-else>
         <div class="grid place-items-center gap-4">

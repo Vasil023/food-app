@@ -20,24 +20,35 @@ const routes = [
     path: '/create',
     name: 'create',
     component: () => import('../views/CreateItemsView.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
     path: '/checked',
     name: 'check',
     component: () => import('../views/CheckedItems.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
     path: '/search',
     name: 'search',
     component: () => import('../views/SearchRecipe.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
     path: '/search/:id',
     name: 'SearchWithID',
     component: () => import('../views/ResulSearchRecipeId.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('../views/ProfileView.vue'),
+    meta: { requiresAuth: true }
   },
 
 ]
