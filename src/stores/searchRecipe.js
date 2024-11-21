@@ -26,6 +26,7 @@ export const useSearchRecipeStore = defineStore('search', {
     },
 
     async fethRecipeById(id) {
+      this.isLoading = true
       try {
         const response = await getRecipeById(id)
         const translatedSummary = await translateText(response.summary, "en", "uk");
@@ -40,6 +41,8 @@ export const useSearchRecipeStore = defineStore('search', {
           steps: translatedSteps,
           image: response.image,
         }
+
+        this.isLoading = false
       } catch (error) {
         console.log('error', error);
       }

@@ -22,7 +22,7 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <div class="mb-24" v-if="searchRecipeStore.resulSearch">
+    <div class="mb-24" v-if="searchRecipeStore.resulSearch && !searchRecipeStore.isLoading">
       <div class="mb-4">
         <img
           class="m-auto h-full object-contain rounded-lg"
@@ -39,6 +39,14 @@ onMounted(() => {
             {{ item }}
           </li>
         </ol>
+      </div>
+    </div>
+
+    <div v-if="searchRecipeStore.isLoading">
+      <div class="grid place-items-center h-[calc(100vh-180px)]">
+        <div class="grid place-items-center gap-4">
+          <span class="pi pi-spin pi-spinner" style="font-size: 3rem; color: #5a382d"></span>
+        </div>
       </div>
     </div>
   </div>
