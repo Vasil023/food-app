@@ -11,25 +11,36 @@ const router = useRouter();
 
 const ingredient = ref("");
 
-// Синхронізація інпуту з URL
+// Sync input with the URL query on mount
 onMounted(() => {
   const queryIngredient = route.query.ingredient || "";
-  ingredient.value = queryIngredient;
+  ingredient.value = queryIngredient; // Синхронізуємо поле вводу з URL
   if (queryIngredient) {
     searchRecipeStore.searchRecipe(queryIngredient);
   }
 });
 
-// Слідкуємо за зміною значення інпуту
+// Стежимо за змінами `ingredient`, уникаючи рекурсії
 watch(ingredient, (newValue) => {
-  router.push({
-    query: {
-      ...route.query,
-      ingredient: newValue || undefined, // Видаляємо параметр, якщо він пустий
-    },
-  });
+  if (newValue !== route.query.ingredient) {
+    // Оновлюємо маршрут тільки якщо значення змінилося
+    router
+      .push({
+        query: {
+          ...route.query,
+          ingredient: newValue || undefined,
+        },
+      })
+      .catch((err) => {
+        // Ігноруємо помилки переходу (наприклад, якщо маршрут той самий)
+        if (err.name !== "NavigationDuplicated") {
+          console.error(err);
+        }
+      });
+  }
 });
 
+// Submit handler for search
 const sendIngredient = () => {
   searchRecipeStore.searchRecipe(ingredient.value);
 };
