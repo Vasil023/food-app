@@ -6,7 +6,6 @@ export const findByIngridients = async (ingridients) => {
 
   try {
     const response = await apiFindIngredients.get(`findByIngredients?ingredients=${translatedIngredient}&apiKey=a090bf50a6714a89a85dff9f385215ff&number=50`);
-    console.log('response', response);
     return response.data;
   } catch (error) {
     console.error('Failed to fetch products', error);

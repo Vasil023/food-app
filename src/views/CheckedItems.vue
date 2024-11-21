@@ -14,7 +14,7 @@ const recipeStore = useRecipeStore();
       >
         <recipeItem v-for="item in recipeStore.getCheckedRecipe" :item="item" :key="item._id" />
       </div>
-      <div class="grid place-items-center h-screen" v-else>
+      <div class="grid place-items-center h-[calc(100vh-180px)]" v-else>
         <div class="grid place-items-center gap-4">
           <span class="pi pi-cart-minus" style="font-size: 4rem; color: #5a382d"></span>
           <p>Ви нічого не додали в обране</p>

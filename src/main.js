@@ -22,25 +22,6 @@ app.use(VueLazyload, {
   loading: '/src/assets/img/defoult.jpg'
 })
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/registerSW.js").then((registration) => {
-    registration.onupdatefound = () => {
-      const installingWorker = registration.installing;
-      installingWorker.onstatechange = () => {
-        if (installingWorker.state === "installed") {
-          if (navigator.serviceWorker.controller) {
-            // Повідомити користувача про оновлення
-            console.log("New content is available; please refresh.");
-          } else {
-            console.log("Content is cached for offline use.");
-          }
-        }
-      };
-    };
-  });
-}
-
-
 app.use(createPinia())
 
 app.use(router)

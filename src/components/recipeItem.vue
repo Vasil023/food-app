@@ -1,5 +1,7 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
+import { toast } from "vue3-toastify";
+import { translateText } from "@/utils/translate";
 
 const props = defineProps(["item"]);
 
@@ -8,11 +10,24 @@ const recipeStore = useRecipeStore();
 const checkRecipe = async (id, isChecked) => {
   await recipeStore.checkItem(id, isChecked);
 };
+
+const addedRecipe = async (id, title, image) => {
+  const translated = await translateText(title, "en", "uk");
+
+  await recipeStore
+    .createRecipe({ id, title: translated, image })
+    .then(() => {
+      toast.success("Рецепт успішно додано");
+    })
+    .catch(() => {
+      toast.error("Не вдалося додати рецепт");
+    });
+};
 </script>
 
 <template>
   <div class="break-inside-avoid mb-4 rounded-xl">
-    <router-link :to="`/search/${item.id}`">
+    <router-link :to="`/search/${item.id ? item.id : ''}`">
       <div class="w-full relative">
         <img
           loading="lazy"
@@ -45,8 +60,15 @@ const checkRecipe = async (id, isChecked) => {
         {{ props.item.point }}
       </div>
       <span
+        v-if="props.item.point"
         :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
         @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
+        style="font-size: 1rem"
+      ></span>
+      <span
+        v-else
+        class="pi pi-plus"
+        @click="addedRecipe(props.item.id, props.item.title, props.item.image)"
         style="font-size: 1rem"
       ></span>
     </div>
