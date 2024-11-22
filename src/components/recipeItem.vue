@@ -10,7 +10,7 @@ const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
 const checkRecipe = async (id, isChecked) => {
-  await recipeStore.toggleRecipeCheckStatus(id, isChecked);
+  await recipeStore.toggleRecipeCheckStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
 };
 
 const addedRecipe = async (id, title, image) => {

@@ -27,6 +27,7 @@ export const login = async (email, password) => {
 
 export const getUser = async (id) => {
   try {
+    console.log('id', id);
     const response = await apiClient.get(GET_USER, { id });
     return response?.data;
   } catch (error) {
@@ -35,9 +36,9 @@ export const getUser = async (id) => {
   }
 };
 
-export const updatePoint = async (id, point) => {
+export const updatePoint = async (point, userId) => {
   try {
-    const response = await apiClient.patch(`${UPDATE}/${id}`, { id, point });
+    const response = await apiClient.patch(`${UPDATE}/${userId}`, { point, userId });
     return response?.data;
   } catch (error) {
     console.log('Failed to fetch products', error);
