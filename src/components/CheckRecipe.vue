@@ -1,20 +1,23 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
-import { useUserStore } from "@/stores/userStore";
+// import { useUserStore } from "@/stores/userStore";
 // import { toast } from "vue3-toastify";
 
 const props = defineProps(["item"]);
 
 const recipeStore = useRecipeStore();
-const userStore = useUserStore();
+// const userStore = useUserStore();
+
+recipeStore.initSocket();
 
 const checkRecipe = async (id, isChecked) => {
-  await recipeStore.toggleRecipeCheckStatus(id, isChecked);
+  console.log("Checking recipe:", id, isChecked);
+  recipeStore.updateRecipeStatus(id, { isChecked: isChecked });
 };
 
-const updatePoint = async (point, id) => {
-  await userStore.fetchUpdatedPoints(point, id);
-};
+// const updatePoint = async (point, id) => {
+//   await userStore.fetchUpdatedPoints(point, id);
+// };
 </script>
 
 <template>
@@ -63,14 +66,16 @@ const updatePoint = async (point, id) => {
 
     <div class="flex justify-between pt-4 px-2 border-t">
       <span @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
+        f
       </span>
 
-      <span
+      {{ props.item.isChecked ? "Added to favorites" : "Add to favorites" }}
+      <!-- <span
         class="pi pi-check cursor-pointer"
         style="font-size: 1.3rem; color: #5a382d"
         @click="updatePoint(props.item.point, props.item._id)"
       >
-      </span>
+      </span> -->
     </div>
   </div>
 </template>
