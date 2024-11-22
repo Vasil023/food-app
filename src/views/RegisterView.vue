@@ -5,6 +5,7 @@ import { useUserStore } from "@/stores/userStore";
 
 // Оголошення змінних
 const email = ref("");
+const nickname = ref("");
 const password = ref("");
 const role = ref("user");
 const error = ref("");
@@ -15,7 +16,7 @@ const route = useRouter();
 
 // Функція реєстрації
 const registerUser = async () => {
-  await userStore.register(email.value, password.value, role.value);
+  await userStore.register(email.value, nickname.value, password.value, role.value);
 
   if (userStore.error) {
     error.value = userStore.error;
@@ -40,9 +41,7 @@ const loginUser = async () => {
 
 <template>
   <div class="min-h-screen text-gray-900 flex justify-center">
-    <div
-      class="m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1"
-    >
+    <div class="m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
       <div>
         <div class="mt-12 flex flex-col items-center">
           <h1 class="text-2xl xl:text-3xl font-extrabold">
@@ -59,12 +58,17 @@ const loginUser = async () => {
                 v-model="email"
               />
 
-              <span
-                v-if="error.type === 'email'"
-                class="text-red-500 text-xs mt-1"
-              >
+              <span v-if="error.type === 'email'" class="text-red-500 text-xs mt-1">
                 {{ error.message }}
               </span>
+
+              <input
+                v-if="!login"
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                type="text"
+                placeholder="Nickname"
+                v-model="nickname"
+              />
 
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
@@ -74,10 +78,7 @@ const loginUser = async () => {
                 v-model="password"
               />
 
-              <span
-                v-if="error.type === 'password'"
-                class="text-red-500 text-xs mt-1"
-              >
+              <span v-if="error.type === 'password'" class="text-red-500 text-xs mt-1">
                 {{ error.message }}
               </span>
 
@@ -102,11 +103,7 @@ const loginUser = async () => {
                   />
                 </svg>
 
-                <i
-                  v-else
-                  class="pi pi-spin pi-spinner"
-                  style="font-size: 1.3rem"
-                ></i>
+                <i v-else class="pi pi-spin pi-spinner" style="font-size: 1.3rem"></i>
 
                 <span class="ml-3">
                   {{ login ? "Увійти" : "Регістрація" }}

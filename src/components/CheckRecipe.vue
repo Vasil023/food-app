@@ -10,7 +10,7 @@ const userStore = useUserStore();
 
 const checkRecipeIsCooking = async (id, isCooking) => {
   await recipeStore.toggleRecipeCheckStatus(id, {
-    userCooked: { _id: userStore.userId },
+    userCooked: { _id: userStore.userId, nickname: userStore.nickname },
     isCooking: isCooking,
   });
 };
@@ -72,15 +72,12 @@ const updatePointInUser = async (id, point, userId) => {
         ></span> -->
       </div>
     </div>
-    <p v-if="props.item.userCooked === userStore.userId" class="text-xs text-gray-500 px-2 text-center">
-      ти готуєш
+    <p v-if="props.item.userCooked" class="text-xs text-gray-500 px-2 text-center">
+      Готує: {{ props.item.userCooked?.nickname }}
     </p>
+
     <div class="flex justify-between items-end pt-4 px-2 border-t">
-      <span
-        v-if="!props.item.isCooking || userStore.userId !== props.item.userCooked"
-        @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)"
-        class="pi pi-times"
-      >
+      <span @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
       </span>
 
       <span
@@ -91,14 +88,16 @@ const updatePointInUser = async (id, point, userId) => {
       >
       </span>
 
+      <!-- Підтверджено що інший юзер приготував -->
       <span
-        v-if="userStore.userId !== props.item.userCooked && props.item.isCooking"
+        v-if="userStore.userId !== props.item.userCooked?._id && props.item.isCooking"
         class="pi pi-check cursor-pointer"
         style="font-size: 1.3rem; color: #5a382d"
-        @click="updatePointInUser(props.item._id, props.item.point, props.item.userCooked)"
+        @click="updatePointInUser(props.item._id, props.item.point, props.item.userCooked?._id)"
       >
       </span>
 
+      <!-- Підтвердження що юзер бере рецепт приготування -->
       <span
         v-if="!props.item.isCooking"
         class="pi pi-check cursor-pointer"
@@ -107,7 +106,7 @@ const updatePointInUser = async (id, point, userId) => {
       >
       </span>
       <span
-        v-if="props.item.isCooking && userStore.userId === props.item.userCooked"
+        v-if="props.item.isCooking && userStore.userId === props.item.userCooked?._id"
         class="pi pi-spin pi-spinner"
         style="font-size: 1.3rem"
       ></span>
