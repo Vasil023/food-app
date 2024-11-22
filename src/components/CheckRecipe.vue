@@ -78,9 +78,13 @@ const updatePointInUser = async (id, userId, point) => {
         ></span> -->
       </div>
     </div>
-    <p v-if="props.item.userCooked" class="text-xs text-gray-500 px-2 text-center">
-      Готує: {{ props.item.userCooked?.nickname }}
-    </p>
+    <div
+      v-if="props.item.userCooked"
+      class="text-xs text-gray-500 px-2 text-center flex items-center justify-center gap-2 pb-1"
+    >
+      <p>Готує: {{ props.item.userCooked?.nickname }}</p>
+      <span class="pi pi-spin pi-spinner" style="font-size: 0.8rem"></span>
+    </div>
 
     <div class="flex justify-between items-end pt-4 px-2 border-t">
       <span @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
