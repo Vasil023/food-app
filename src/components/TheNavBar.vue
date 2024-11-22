@@ -78,3 +78,19 @@ const recipeStore = useRecipeStore();
     </div>
   </nav>
 </template>
+
+<style lang="scss" scoped>
+.router-link-active {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+}
+</style>

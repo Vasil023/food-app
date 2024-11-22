@@ -29,7 +29,15 @@ export const useSearchRecipeStore = defineStore('search', {
       this.isLoading = true
       try {
         const response = await getRecipeById(id)
-        const translatedSummary = await translateText(response.summary, "en", "uk");
+        let translatedSummary = null
+
+        if (response?.instructions) {
+          translatedSummary = await translateText(response?.instructions, "en", "uk");
+        } else {
+          translatedSummary = await translateText(response?.summary, "en", "uk");
+        }
+
+
         const translatedSteps = await Promise.all(
           response.analyzedInstructions[0].steps.map(async (step) => {
             return await translateText(step.step, "en", "uk");

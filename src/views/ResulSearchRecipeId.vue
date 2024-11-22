@@ -25,7 +25,7 @@ onMounted(() => {
     <div class="mb-24" v-if="searchRecipeStore.resulSearch && !searchRecipeStore.isLoading">
       <div class="mb-4">
         <img
-          class="m-auto h-full object-contain rounded-lg"
+          class="m-auto h-[370px] object-cover rounded-lg"
           :src="searchRecipeStore.resulSearch.image"
           alt="Image"
         />
