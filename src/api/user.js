@@ -5,9 +5,9 @@ const LOGIN = "/auth/login";
 const UPDATE = "/auth/update-point";
 const GET_USER = "/auth/get-user";
 
-export const register = async (email, password, role) => {
+export const register = async (email, nickname, password, role) => {
   try {
-    const response = await apiClient.post(REGISTER, { email, password, role });
+    const response = await apiClient.post(REGISTER, { email, nickname, password, role });
     return response?.data;
   } catch (error) {
     console.error('Failed to fetch products', error);

@@ -7,16 +7,17 @@ export const useUserStore = defineStore('user', {
     token: localStorage.getItem('token') || null,
     userId: localStorage.getItem('userId') || null,
     points: localStorage.getItem('point') || null,
+    nickname: null,
     email: null,
     error: null,
     isLoading: false
   }),
 
   actions: {
-    async register(email, password, role) {
+    async register(email, nickname, password, role) {
       this.isLoading = true
       try {
-        const response = await register(email, password, role)
+        const response = await register(email, nickname, password, role)
 
         // Перевірка помилок  
         if (response.status === 400) {
@@ -49,12 +50,14 @@ export const useUserStore = defineStore('user', {
 
         localStorage.setItem('token', response?.token);
         localStorage.setItem('userId', response?.userId);
-        localStorage.setItem('point', response?.point);
 
         this.token = response?.token;
         this.userId = response?.userId;
         this.points = response?.point;
         this.email = response?.email
+        this.nickname = response?.nickname
+
+        console.log('this.userId', response);
 
         this.isLoading = false;
 
@@ -71,6 +74,7 @@ export const useUserStore = defineStore('user', {
         const response = await getUser(this.userId)
         this.points = response?.point
         this.email = response?.email
+        this.nickname = response?.nickname
       } catch (error) {
         console.log('error', error);
       }
