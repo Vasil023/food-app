@@ -1,9 +1,9 @@
 import { apiClient } from "./axios";
 
-const REGISTER = "/auth/register";
-const LOGIN = "/auth/login";
-const UPDATE = "/auth/update-point";
-const GET_USER = "/auth/get-user";
+const REGISTER = "/api/auth/register";
+const LOGIN = "/api/auth/login";
+const UPDATE = "/api/auth/update-point";
+const GET_USER = "/api/auth/get-user";
 
 export const register = async (email, nickname, password, role) => {
   try {

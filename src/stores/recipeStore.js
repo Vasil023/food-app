@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { getAllRecipe, createRecipe, updateRecipe } from '@/api/recipe'
+import socket from '@/socket/socket'
 
 export const useRecipeStore = defineStore('recipe', {
   state: () => ({
@@ -81,6 +82,44 @@ export const useRecipeStore = defineStore('recipe', {
         this.isLoading = false
       }
     },
+
+    // Зміна статусу рецепту
+    toggleRecipeStatus(id, updatedFields) {
+      const recipeIndex = this.recipes.findIndex((recipe) => recipe._id === id);
+      if (recipeIndex !== -1) {
+        this.recipes[recipeIndex] = {
+          ...this.recipes[recipeIndex],
+          ...updatedFields,
+        };
+
+      } else {
+        console.log('Recipe not found in Pinia state:', id);
+      }
+    },
+
+    // Ініціалізація WebSocket
+    initSocket() {
+      socket.on('recipeUpdated', (updatedRecipe) => {
+
+        const index = this.recipes.findIndex((r) => r._id === updatedRecipe._id);
+        if (index !== -1) {
+          this.recipes[index] = updatedRecipe; // Оновлюємо рецепт у списку
+        }
+      });
+
+      socket.on('error', (message) => {
+        console.error('WebSocket error:', message);
+        this.error = message;
+      });
+    },
+
+
+    // Відправка оновлення через WebSocket
+    updateRecipeStatus(id, updatedFields) {
+      console.log('Updating recipe status:', id, updatedFields);
+      socket.emit('updateRecipe', { id, ...updatedFields });
+    },
+
   },
 
   getters: {

@@ -9,8 +9,10 @@ const props = defineProps(["item"]);
 const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
+recipeStore.initSocket();
+
 const checkRecipe = async (id, isChecked) => {
-  await recipeStore.toggleRecipeCheckStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
+  recipeStore.updateRecipeStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
 };
 
 const addedRecipe = async (id, title, image) => {

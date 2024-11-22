@@ -19,6 +19,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="flex items-center justify-around px-3 relative">
+      <button class="pi pi-replay reload absolute left-4" onclick="location.reload();"></button>
       <div class="flex-1 text-center">
         <p class="logo text-[#5a382d]">Nyama</p>
       </div>

@@ -1,8 +1,8 @@
 import { apiClient } from "./axios";
 
-const NAME = "recipes/get-all";
-const CREATE = "recipes/create";
-const UPDATE = "recipes/update";
+const NAME = "/api/recipes/get-all";
+const CREATE = "/api/recipes/create";
+const UPDATE = "/api/recipes/update";
 
 export const createRecipe = async ({ ...args }) => {
   try {

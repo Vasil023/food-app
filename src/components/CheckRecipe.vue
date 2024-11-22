@@ -1,30 +1,36 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useUserStore } from "@/stores/userStore";
-// import { toast } from "vue3-toastify";
 
 const props = defineProps(["item"]);
 
 const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
+recipeStore.initSocket();
+userStore.initSocket();
+
 const checkRecipeIsCooking = async (id, isCooking) => {
-  await recipeStore.toggleRecipeCheckStatus(id, {
-    userCooked: { _id: userStore.userId, nickname: userStore.nickname },
+  recipeStore.updateRecipeStatus(id, {
+    userCooked: {
+      _id: userStore.userId,
+      nickname: userStore.nickname,
+    },
     isCooking: isCooking,
   });
 };
 
 const removeRecipe = async (id) => {
-  await recipeStore.toggleRecipeCheckStatus(id, {
+  recipeStore.updateRecipeStatus(id, {
     isCooking: false,
     isChecked: false,
     userCooked: null,
   });
 };
 
-const updatePointInUser = async (id, point, userId) => {
-  await userStore.fetchUpdatedPoints(id, point, userId);
+const updatePointInUser = async (id, userId, point) => {
+  userStore.updateUser(userId, point);
+
   removeRecipe(id);
 };
 </script>
@@ -93,7 +99,7 @@ const updatePointInUser = async (id, point, userId) => {
         v-if="userStore.userId !== props.item.userCooked?._id && props.item.isCooking"
         class="pi pi-check cursor-pointer"
         style="font-size: 1.3rem; color: #5a382d"
-        @click="updatePointInUser(props.item._id, props.item.point, props.item.userCooked?._id)"
+        @click="updatePointInUser(props.item._id, props.item.userCooked?._id, props.item.point)"
       >
       </span>
 
@@ -105,6 +111,7 @@ const updatePointInUser = async (id, point, userId) => {
         @click="checkRecipeIsCooking(props.item._id, props.item.isCooking ? false : true)"
       >
       </span>
+
       <span
         v-if="props.item.isCooking && userStore.userId === props.item.userCooked?._id"
         class="pi pi-spin pi-spinner"

@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { login, register, updatePoint, getUser } from '@/api/user'
 import { useRecipeStore } from '@/stores/recipeStore'
+import socket from '@/socket/socket'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     userId: localStorage.getItem('userId') || null,
-    points: localStorage.getItem('point') || null,
+    points: null,
     nickname: null,
     email: null,
     error: null,
@@ -57,8 +58,6 @@ export const useUserStore = defineStore('user', {
         this.email = response?.email
         this.nickname = response?.nickname
 
-        console.log('this.userId', response);
-
         this.isLoading = false;
 
         useRecipeStore().fetchAllRecipes()
@@ -93,6 +92,21 @@ export const useUserStore = defineStore('user', {
       } catch (error) {
         console.log('error', error);
       }
+    },
+
+    initSocket() {
+      socket.on('userUpdated', (updatedUser) => {
+        console.log('User updated:', updatedUser);
+
+        if (updatedUser._id === this.userId) {
+          this.points = updatedUser.point;
+        }
+      });
+    },
+
+    // Функція для оновлення користувача через сокет
+    updateUser(userId, point) {
+      socket.emit('updateUser', { userId, point });
     },
 
     isLoggedIn() {
