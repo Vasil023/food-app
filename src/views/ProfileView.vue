@@ -55,9 +55,7 @@ const logout = () => {
         </a>
       </div>
 
-      <p class="mt-2 text-sm text-gray-900">
-        Lorem ipsum dolor sit amet, consecte adipisicing elit. Voluptatibus quia Maiores et perferendis eaque.
-      </p>
+      <p class="mt-2 text-sm text-gray-900">Nickname: {{ userStore.nickname }}</p>
     </div>
   </div>
 </template>

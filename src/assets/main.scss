@@ -42,6 +42,15 @@ textarea {
 }
 
 #app {
+
+  button,
+  .reload {
+    background-color: #fff !important;
+    color: #603d31 !important;
+    width: 10px;
+
+  }
+
   button {
     background-color: #603d31;
     display: block;

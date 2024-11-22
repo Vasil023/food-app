@@ -1,22 +1,24 @@
 import { defineStore } from 'pinia'
 import { login, register, updatePoint, getUser } from '@/api/user'
 import { useRecipeStore } from '@/stores/recipeStore'
+import socket from '@/socket/socket'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || null,
     userId: localStorage.getItem('userId') || null,
-    points: localStorage.getItem('point') || null,
+    points: null,
+    nickname: null,
     email: null,
     error: null,
     isLoading: false
   }),
 
   actions: {
-    async register(email, password, role) {
+    async register(email, nickname, password, role) {
       this.isLoading = true
       try {
-        const response = await register(email, password, role)
+        const response = await register(email, nickname, password, role)
 
         // Перевірка помилок  
         if (response.status === 400) {
@@ -49,12 +51,12 @@ export const useUserStore = defineStore('user', {
 
         localStorage.setItem('token', response?.token);
         localStorage.setItem('userId', response?.userId);
-        localStorage.setItem('point', response?.point);
 
         this.token = response?.token;
         this.userId = response?.userId;
         this.points = response?.point;
         this.email = response?.email
+        this.nickname = response?.nickname
 
         this.isLoading = false;
 
@@ -71,24 +73,40 @@ export const useUserStore = defineStore('user', {
         const response = await getUser(this.userId)
         this.points = response?.point
         this.email = response?.email
+        this.nickname = response?.nickname
       } catch (error) {
         console.log('error', error);
       }
     },
 
-    async fetchUpdatedPoints(point, id) {
+    async fetchUpdatedPoints(id, point, userId) {
       try {
-        const response = await updatePoint(this.userId, point)
+        const response = await updatePoint(point, userId)
 
         useRecipeStore().toggleRecipeCheckStatus(id, false)
 
-        this.points = response?.user?.point
+        // this.points = response?.user?.point
 
         localStorage.setItem('point', response?.user?.point);
 
       } catch (error) {
         console.log('error', error);
       }
+    },
+
+    initSocket() {
+      socket.on('userUpdated', (updatedUser) => {
+        console.log('User updated:', updatedUser);
+
+        if (updatedUser._id === this.userId) {
+          this.points = updatedUser.point;
+        }
+      });
+    },
+
+    // Функція для оновлення користувача через сокет
+    updateUser(userId, point) {
+      socket.emit('updateUser', { userId, point });
     },
 
     isLoggedIn() {

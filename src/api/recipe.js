@@ -1,8 +1,8 @@
 import { apiClient } from "./axios";
 
-const NAME = "recipes/get-all";
-const CREATE = "recipes/create";
-const UPDATE = "recipes/update";
+const NAME = "/api/recipes/get-all";
+const CREATE = "/api/recipes/create";
+const UPDATE = "/api/recipes/update";
 
 export const createRecipe = async ({ ...args }) => {
   try {
@@ -24,13 +24,14 @@ export const getAllRecipe = async () => {
   }
 };
 
-export const updateRecipeCheckStatus = async (id, isChecked) => {
+export const updateRecipe = async (id, updatedFields) => {
+  console.log('updatedFields', updatedFields);
   try {
-    const response = await apiClient.put(`${UPDATE}/${id}`, { isChecked: isChecked });
+    const response = await apiClient.put(`${UPDATE}/${id}`, updatedFields);
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch products', error);
-    return error;
+    console.error('Failed to update recipe', error);
+    throw error;
   }
 };
 

@@ -1,23 +1,38 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
-// import { useUserStore } from "@/stores/userStore";
-// import { toast } from "vue3-toastify";
+import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps(["item"]);
 
 const recipeStore = useRecipeStore();
-// const userStore = useUserStore();
+const userStore = useUserStore();
 
 recipeStore.initSocket();
+userStore.initSocket();
 
-const checkRecipe = async (id, isChecked) => {
-  console.log("Checking recipe:", id, isChecked);
-  recipeStore.updateRecipeStatus(id, { isChecked: isChecked });
+const checkRecipeIsCooking = async (id, isCooking) => {
+  recipeStore.updateRecipeStatus(id, {
+    userCooked: {
+      _id: userStore.userId,
+      nickname: userStore.nickname,
+    },
+    isCooking: isCooking,
+  });
 };
 
-// const updatePoint = async (point, id) => {
-//   await userStore.fetchUpdatedPoints(point, id);
-// };
+const removeRecipe = async (id) => {
+  recipeStore.updateRecipeStatus(id, {
+    isCooking: false,
+    isChecked: false,
+    userCooked: null,
+  });
+};
+
+const updatePointInUser = async (id, userId, point) => {
+  userStore.updateUser(userId, point);
+
+  removeRecipe(id);
+};
 </script>
 
 <template>
@@ -63,19 +78,45 @@ const checkRecipe = async (id, isChecked) => {
         ></span> -->
       </div>
     </div>
+    <p v-if="props.item.userCooked" class="text-xs text-gray-500 px-2 text-center">
+      Готує: {{ props.item.userCooked?.nickname }}
+    </p>
 
-    <div class="flex justify-between pt-4 px-2 border-t">
-      <span @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
-        f
+    <div class="flex justify-between items-end pt-4 px-2 border-t">
+      <span @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
       </span>
 
-      {{ props.item.isChecked ? "Added to favorites" : "Add to favorites" }}
-      <!-- <span
+      <span
+        v-if="userStore.userId === props.item.user._id && props.item.isDone"
         class="pi pi-check cursor-pointer"
         style="font-size: 1.3rem; color: #5a382d"
-        @click="updatePoint(props.item.point, props.item._id)"
+        @click="updatePointInUser(props.item.point, props.item._id)"
       >
-      </span> -->
+      </span>
+
+      <!-- Підтверджено що інший юзер приготував -->
+      <span
+        v-if="userStore.userId !== props.item.userCooked?._id && props.item.isCooking"
+        class="pi pi-check cursor-pointer"
+        style="font-size: 1.3rem; color: #5a382d"
+        @click="updatePointInUser(props.item._id, props.item.userCooked?._id, props.item.point)"
+      >
+      </span>
+
+      <!-- Підтвердження що юзер бере рецепт приготування -->
+      <span
+        v-if="!props.item.isCooking"
+        class="pi pi-check cursor-pointer"
+        style="font-size: 1.3rem; color: #5a382d"
+        @click="checkRecipeIsCooking(props.item._id, props.item.isCooking ? false : true)"
+      >
+      </span>
+
+      <span
+        v-if="props.item.isCooking && userStore.userId === props.item.userCooked?._id"
+        class="pi pi-spin pi-spinner"
+        style="font-size: 1.3rem"
+      ></span>
     </div>
   </div>
 </template>

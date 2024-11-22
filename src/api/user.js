@@ -1,13 +1,13 @@
 import { apiClient } from "./axios";
 
-const REGISTER = "/auth/register";
-const LOGIN = "/auth/login";
-const UPDATE = "/auth/update-point";
-const GET_USER = "/auth/get-user";
+const REGISTER = "/api/auth/register";
+const LOGIN = "/api/auth/login";
+const UPDATE = "/api/auth/update-point";
+const GET_USER = "/api/auth/get-user";
 
-export const register = async (email, password, role) => {
+export const register = async (email, nickname, password, role) => {
   try {
-    const response = await apiClient.post(REGISTER, { email, password, role });
+    const response = await apiClient.post(REGISTER, { email, nickname, password, role });
     return response?.data;
   } catch (error) {
     console.error('Failed to fetch products', error);
@@ -27,6 +27,7 @@ export const login = async (email, password) => {
 
 export const getUser = async (id) => {
   try {
+    console.log('id', id);
     const response = await apiClient.get(GET_USER, { id });
     return response?.data;
   } catch (error) {
@@ -35,9 +36,9 @@ export const getUser = async (id) => {
   }
 };
 
-export const updatePoint = async (id, point) => {
+export const updatePoint = async (point, userId) => {
   try {
-    const response = await apiClient.patch(`${UPDATE}/${id}`, { id, point });
+    const response = await apiClient.patch(`${UPDATE}/${userId}`, { point, userId });
     return response?.data;
   } catch (error) {
     console.log('Failed to fetch products', error);
