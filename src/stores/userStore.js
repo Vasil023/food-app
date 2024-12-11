@@ -17,12 +17,18 @@ export const useUserStore = defineStore('user', {
   actions: {
     async register(email, nickname, password, role) {
       this.isLoading = true
+      this.error = null
+
       try {
         const response = await register(email, nickname, password, role)
 
         // Перевірка помилок  
         if (response.status === 400) {
-          this.error = response.response?.data;
+          this.error = response.response?.data.errors.reduce((acc, item) => {
+            acc[item.path] = item.msg;
+            return acc;
+          }, {});
+
           this.isLoading = false;
           return
         }
@@ -41,10 +47,14 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await login(email, password);
-        console.log('response', response);
+
         // Перевірка помилок  
         if (response.status === 400) {
-          this.error = response.response?.data;
+          this.error = response.response?.data.errors.reduce((acc, item) => {
+            acc[item.path] = item.msg;
+            return acc;
+          }, {});
+
           this.isLoading = false;
           return
         }
@@ -74,6 +84,11 @@ export const useUserStore = defineStore('user', {
         this.points = response?.point
         this.email = response?.email
         this.nickname = response?.nickname
+
+        if (response.status === 401) {
+          this.logout()
+        }
+
       } catch (error) {
         console.log('error', error);
       }
@@ -84,8 +99,6 @@ export const useUserStore = defineStore('user', {
         const response = await updatePoint(point, userId)
 
         useRecipeStore().toggleRecipeCheckStatus(id, false)
-
-        // this.points = response?.user?.point
 
         localStorage.setItem('point', response?.user?.point);
 

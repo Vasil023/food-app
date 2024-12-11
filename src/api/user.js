@@ -10,7 +10,7 @@ export const register = async (email, nickname, password, role) => {
     const response = await apiClient.post(REGISTER, { email, nickname, password, role });
     return response?.data;
   } catch (error) {
-    console.error('Failed to fetch products', error);
+    console.error('Failed to fetch products', error.response?.data.errors);
     return error;
   }
 };

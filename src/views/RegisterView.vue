@@ -10,6 +10,7 @@ const password = ref("");
 const role = ref("user");
 const error = ref("");
 const login = ref(true);
+const isPasswordVisible = ref(false);
 const userStore = useUserStore();
 
 const route = useRouter();
@@ -37,14 +38,18 @@ const loginUser = async () => {
     route.push("/");
   }
 };
+
+const togglePasswordVisibility = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
 </script>
 
 <template>
-  <div class="min-h-screen text-gray-900 flex justify-center">
-    <div class="m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+  <div class="min-h-screen text-gray-900">
+    <div class="m-0 sm:m-10 bg-white sm:rounded-lg">
       <div>
         <div class="mt-12 flex flex-col items-center">
-          <h1 class="text-2xl xl:text-3xl font-extrabold">
+          <h1 class="text-2xl xl:text-3xl font-extrabold text-center">
             {{ login ? "Увійти" : "Реєстрація" }}
           </h1>
 
@@ -52,34 +57,49 @@ const loginUser = async () => {
             <div class="mx-auto px-4">
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
-                :class="{ 'border-red-500': error.type === 'email' }"
+                :class="{ 'border-red-500': error.email }"
                 type="email"
                 placeholder="Email"
                 v-model="email"
               />
 
-              <span v-if="error.type === 'email'" class="text-red-500 text-xs mt-1">
-                {{ error.message }}
+              <span v-if="error.email" class="text-red-500 text-xs mt-1">
+                {{ error.email }}
               </span>
 
               <input
                 v-if="!login"
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                :class="{ 'border-red-500': error.nickname }"
                 type="text"
                 placeholder="Nickname"
                 v-model="nickname"
               />
 
-              <input
-                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                :class="{ 'border-red-500': error.type === 'password' }"
-                type="password"
-                placeholder="Password"
-                v-model="password"
-              />
+              <span v-if="error.nickname" class="text-red-500 text-xs mt-1">
+                {{ error.nickname }}
+              </span>
 
-              <span v-if="error.type === 'password'" class="text-red-500 text-xs mt-1">
-                {{ error.message }}
+              <div class="input relative" data-toggle-password="true">
+                <input
+                  placeholder="Password"
+                  :type="isPasswordVisible ? 'text' : 'password'"
+                  class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  :class="{ 'border-red-500': error.password }"
+                  v-model="password"
+                />
+                <sapn
+                  type="button"
+                  class="btn btn-icon absolute top-[65%] right-3 -translate-y-1/2"
+                  @click="togglePasswordVisibility"
+                >
+                  <i v-if="isPasswordVisible" class="pi pi-eye-slash"></i>
+                  <i v-else class="pi pi-eye"></i>
+                </sapn>
+              </div>
+
+              <span v-if="error.password" class="text-red-500 text-xs mt-1">
+                {{ error.password }}
               </span>
 
               <button
@@ -121,7 +141,14 @@ const loginUser = async () => {
 
             <div class="flex flex-col items-center px-3">
               <button>
-                <span class="ml-4" @click="login = !login">
+                <span
+                  class="ml-4"
+                  @click="
+                    {
+                      (login = !login), (error = {});
+                    }
+                  "
+                >
                   {{ login ? "Регістрація" : "Увійти" }}
                 </span>
               </button>

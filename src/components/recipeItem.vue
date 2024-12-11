@@ -11,10 +11,23 @@ const userStore = useUserStore();
 
 recipeStore.initSocket();
 
+/**
+ * Updates the checked status of a recipe.
+ *
+ * @param {string} id - The unique identifier of the recipe.
+ * @param {boolean} isChecked - The new checked status of the recipe.
+ */
 const checkRecipe = async (id, isChecked) => {
   recipeStore.updateRecipeStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
 };
 
+/**
+ * Adds a new recipe to the list of recipes.
+ *
+ * @param {string} id - The unique identifier of the recipe.
+ * @param {string} title - The title of the recipe.
+ * @param {string} image - The image of the recipe.
+ */
 const addedRecipe = async (id, title, image) => {
   const translated = await translateText(title, "en", "uk");
 
@@ -34,9 +47,8 @@ const addedRecipe = async (id, title, image) => {
     <router-link :to="`/search/${item.id ? item.id : ''}`">
       <div class="w-full relative">
         <img
-          loading="lazy"
+          v-lazy="props.item.image"
           class="w-full rounded-xl object-fill max-w-[300px]"
-          :src="props.item.image ?? 'https://www.ukrslovo.net/wp-content/uploads/2021/11/14-322911_1100.jpg'"
           alt="ui/ux review check"
         />
       </div>
