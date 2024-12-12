@@ -63,7 +63,7 @@ const togglePasswordVisibility = () => {
                 v-model="email"
               />
 
-              <span v-if="error.email" class="text-red-500 text-xs mt-1">
+              <span v-if="error.email" class="text-red-500 text-[11px] mt-1">
                 {{ error.email }}
               </span>
 
@@ -76,7 +76,7 @@ const togglePasswordVisibility = () => {
                 v-model="nickname"
               />
 
-              <span v-if="error.nickname" class="text-red-500 text-xs mt-1">
+              <span v-if="error.nickname" class="text-red-500 500 text-[11px] mt-1">
                 {{ error.nickname }}
               </span>
 
@@ -98,7 +98,7 @@ const togglePasswordVisibility = () => {
                 </sapn>
               </div>
 
-              <span v-if="error.password" class="text-red-500 text-xs mt-1">
+              <span v-if="error.password" class="text-red-500 500 text-[11px] mt-1">
                 {{ error.password }}
               </span>
 
