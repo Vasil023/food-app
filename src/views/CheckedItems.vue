@@ -1,5 +1,6 @@
 <script setup>
 import { useRecipeStore } from "@/stores/recipeStore";
+
 import CheckRecipe from "@/components/CheckRecipe.vue";
 
 const recipeStore = useRecipeStore();
@@ -8,7 +9,10 @@ const recipeStore = useRecipeStore();
 <template>
   <div>
     <div class="container">
-      <div class="columns-2 lg:columns-5 lg:gap-3 gap-2 pt-1 pb-20" v-if="recipeStore.checkedRecipes.length">
+      <div
+        class="columns-2 md:columns-3 lg:columns-6 lg:gap-3 gap-2 pt-1 pb-20"
+        v-if="recipeStore.checkedRecipes.length"
+      >
         <CheckRecipe v-for="item in recipeStore.checkedRecipes" :item="item" :key="item._id" />
       </div>
       <div class="grid place-items-center h-[calc(100vh-180px)]" v-else>

@@ -12,7 +12,7 @@ const logout = () => {
 </script>
 <template>
   <div class="container">
-    <div class="p-5 border rounded text-center text-gray-500">
+    <div class="p-5 border rounded text-center text-gray-500 max-w-[550px] mx-auto">
       <div class="flex items-center justify-end" @click="logout">
         <svg
           xmlns="http://www.w3.org/2000/svg"

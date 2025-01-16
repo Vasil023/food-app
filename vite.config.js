@@ -13,7 +13,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       manifest: {
-        name: "Finance",
+        name: "Nyama",
         short_name: "Nyama",
         description: "Nyama App",
         theme_color: "#ffffff",
@@ -32,7 +32,7 @@ export default defineConfig({
   ],
 
   build: {
-    outDir: 'dist', // Переконайтесь, що збірка йде у папку `dist`
+    outDir: 'dist',
   },
 
   resolve: {

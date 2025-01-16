@@ -12,8 +12,6 @@ const image = ref(null);
 const imageUrl = ref("");
 const error = ref(null);
 
-// const imageUrl = ref('')
-
 const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
@@ -54,7 +52,6 @@ const createRecipes = async () => {
   }
 };
 
-// Функція реєстрації
 const createRecipe = async (data) => {
   error.value = null;
   await recipeStore.addRecipe(data);

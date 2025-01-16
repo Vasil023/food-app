@@ -1,45 +1,5 @@
 <script setup>
-import { useRecipeStore } from "@/stores/recipeStore";
-import { useUserStore } from "@/stores/userStore";
-import { toast } from "vue3-toastify";
-import { translateText } from "@/utils/translate";
-
 const props = defineProps(["item"]);
-
-const recipeStore = useRecipeStore();
-const userStore = useUserStore();
-
-recipeStore.initSocket();
-
-/**
- * Updates the checked status of a recipe.
- *
- * @param {string} id - The unique identifier of the recipe.
- * @param {boolean} isChecked - The new checked status of the recipe.
- */
-const checkRecipe = async (id, isChecked) => {
-  recipeStore.updateRecipeStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
-};
-
-/**
- * Adds a new recipe to the list of recipes.
- *
- * @param {string} id - The unique identifier of the recipe.
- * @param {string} title - The title of the recipe.
- * @param {string} image - The image of the recipe.
- */
-const addedRecipe = async (id, title, image) => {
-  const translated = await translateText(title, "en", "uk");
-
-  await recipeStore
-    .addRecipe({ id, title: translated, image, user: userStore.userId })
-    .then(() => {
-      toast.success("Рецепт успішно додано");
-    })
-    .catch(() => {
-      toast.error("Не вдалося додати рецепт");
-    });
-};
 </script>
 
 <template>
@@ -75,18 +35,9 @@ const addedRecipe = async (id, title, image) => {
         </svg>
         {{ props.item.point }}
       </div>
-      <span
-        v-if="props.item.point"
-        :class="props.item.isChecked ? 'pi pi-bookmark-fill' : 'pi pi pi-bookmark'"
-        @click="checkRecipe(props.item._id, props.item.isChecked ? false : true)"
-        style="font-size: 1rem"
-      ></span>
-      <span
-        v-else
-        class="pi pi-plus"
-        @click="addedRecipe(props.item.id, props.item.title, props.item.image)"
-        style="font-size: 1rem"
-      ></span>
+
+      <slot name="checkRecipe"></slot>
+      <slot name="addedRecipe"></slot>
     </div>
   </div>
 </template>

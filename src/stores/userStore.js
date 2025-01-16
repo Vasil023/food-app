@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { login, register, updatePoint, getUser } from '@/api/user'
-import { useRecipeStore } from '@/stores/recipeStore'
-import socket from '@/socket/socket'
+import { defineStore } from 'pinia';
+import { login, register, updatePoint, getUser } from '@/api/user';
+import { useRecipeStore } from '@/stores/recipeStore';
+import socket from '@/socket/socket';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -11,128 +11,137 @@ export const useUserStore = defineStore('user', {
     nickname: null,
     email: null,
     error: null,
-    isLoading: false
+    isLoading: false,
   }),
 
   actions: {
+    setLoading(state) {
+      this.isLoading = state;
+    },
+
+    setError(error) {
+      this.error = error;
+    },
+
+    handleApiErrors(response) {
+      if (response.status === 400) {
+        this.error = response.response?.data.errors.reduce((acc, item) => {
+          acc[item.path] = item.msg;
+          return acc;
+        }, {});
+        return true; // Помилка є
+      }
+      return false; // Помилки немає
+    },
+
+    saveUserData({ token, userId, point, email, nickname }) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+
+      this.token = token;
+      this.userId = userId;
+      this.points = point;
+      this.email = email;
+      this.nickname = nickname;
+    },
+
     async register(email, nickname, password, role) {
-      this.isLoading = true
-      this.error = null
+      this.setLoading(true);
+      this.setError(null);
 
       try {
-        const response = await register(email, nickname, password, role)
+        const response = await register(email, nickname, password, role);
 
-        // Перевірка помилок  
-        if (response.status === 400) {
-          this.error = response.response?.data.errors.reduce((acc, item) => {
-            acc[item.path] = item.msg;
-            return acc;
-          }, {});
-
-          this.isLoading = false;
-          return
+        if (this.handleApiErrors(response)) {
+          this.setLoading(false);
+          return;
         }
 
-        this.isLoading = false
-
+        this.setLoading(false);
       } catch (error) {
-        console.log('error', error);
-        this.error = error || 'Не вдалося зареєструватися'
+        console.error('Error during registration:', error);
+        this.setError('Не вдалося зареєструватися');
+        this.setLoading(false);
       }
     },
 
     async login(email, password) {
-      this.isLoading = true;
-      this.error = null;
+      this.setLoading(true);
+      this.setError(null);
 
       try {
         const response = await login(email, password);
 
-        // Перевірка помилок  
-        if (response.status === 400) {
-          this.error = response.response?.data.errors.reduce((acc, item) => {
-            acc[item.path] = item.msg;
-            return acc;
-          }, {});
-
-          this.isLoading = false;
-          return
+        if (this.handleApiErrors(response)) {
+          this.setLoading(false);
+          return;
         }
 
-        localStorage.setItem('token', response?.token);
-        localStorage.setItem('userId', response?.userId);
+        this.saveUserData(response);
 
-        this.token = response?.token;
-        this.userId = response?.userId;
-        this.points = response?.point;
-        this.email = response?.email
-        this.nickname = response?.nickname
-
-        this.isLoading = false;
-
-        useRecipeStore().fetchAllRecipes()
+        this.setLoading(false);
+        useRecipeStore().fetchAllRecipes();
       } catch (error) {
-        console.error('Помилка:', error);
-        this.error = 'Виникла помилка з’єднання. Спробуйте ще раз.';
-        this.isLoading = false;
+        console.error('Помилка під час авторизації:', error);
+        this.setError('Виникла помилка з’єднання. Спробуйте ще раз.');
+        this.setLoading(false);
       }
     },
 
     async getUser() {
       try {
-        const response = await getUser(this.userId)
-        this.points = response?.point
-        this.email = response?.email
-        this.nickname = response?.nickname
+        const response = await getUser(this.userId);
 
         if (response.status === 401) {
-          this.logout()
+          this.logout();
+          return;
         }
 
+        this.points = response?.point;
+        this.email = response?.email;
+        this.nickname = response?.nickname;
       } catch (error) {
-        console.log('error', error);
+        console.error('Помилка при отриманні даних користувача:', error);
       }
     },
 
     async fetchUpdatedPoints(id, point, userId) {
       try {
-        const response = await updatePoint(point, userId)
+        const response = await updatePoint(point, userId);
 
-        useRecipeStore().toggleRecipeCheckStatus(id, false)
+        useRecipeStore().toggleRecipeCheckStatus(id, false);
 
-        localStorage.setItem('point', response?.user?.point);
-
+        this.points = response?.user?.point;
+        localStorage.setItem('point', this.points);
       } catch (error) {
-        console.log('error', error);
+        console.error('Помилка при оновленні балів:', error);
       }
     },
 
     initSocket() {
       socket.on('userUpdated', (updatedUser) => {
-        console.log('User updated:', updatedUser);
-
         if (updatedUser._id === this.userId) {
           this.points = updatedUser.point;
         }
       });
     },
 
-    // Функція для оновлення користувача через сокет
     updateUser(userId, point) {
       socket.emit('updateUser', { userId, point });
     },
 
     isLoggedIn() {
-      return !!this.token
+      return !!this.token;
     },
 
     logout() {
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
-      localStorage.removeItem('point')
-      this.token = null
-      this.userId = null
-      this.points = null
-    }
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('point');
+
+      this.token = null;
+      this.userId = null;
+      this.points = null;
+    },
   },
-})
+});

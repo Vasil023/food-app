@@ -10,7 +10,6 @@ export const register = async (email, nickname, password, role) => {
     const response = await apiClient.post(REGISTER, { email, nickname, password, role });
     return response?.data;
   } catch (error) {
-    console.error('Failed to fetch products', error.response?.data.errors);
     return error;
   }
 };
@@ -20,7 +19,6 @@ export const login = async (email, password) => {
     const response = await apiClient.post(LOGIN, { email, password });
     return response?.data;
   } catch (error) {
-    console.log('Failed to fetch products', error);
     return error
   }
 };
@@ -31,7 +29,6 @@ export const getUser = async (id) => {
     const response = await apiClient.get(GET_USER, { id });
     return response?.data;
   } catch (error) {
-    console.log('Failed to fetch products', error);
     return error
   }
 };
@@ -41,7 +38,6 @@ export const updatePoint = async (point, userId) => {
     const response = await apiClient.patch(`${UPDATE}/${userId}`, { point, userId });
     return response?.data;
   } catch (error) {
-    console.log('Failed to fetch products', error);
     return error
   }
 };

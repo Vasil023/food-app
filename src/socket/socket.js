@@ -1,8 +1,7 @@
 import { io } from 'socket.io-client';
 
-// Вказуйте адресу без зайвого слеша
 const socket = io(import.meta.env.VITE_API_URL, {
-  transports: ['websocket'], // Пряме з'єднання через WebSocket (без поллінгу)
+  transports: ['websocket'],
 });
 
 // Обробка підключення

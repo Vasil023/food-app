@@ -9,7 +9,6 @@ export const createRecipe = async ({ ...args }) => {
     const response = await apiClient.post(CREATE, { ...args });
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch products', error);
     return error;
   }
 };
@@ -19,7 +18,6 @@ export const getAllRecipe = async () => {
     const response = await apiClient.get(NAME);
     return response.data;
   } catch (error) {
-    console.error('Failed to fetch products', error);
     return error;
   }
 };
@@ -30,8 +28,7 @@ export const updateRecipe = async (id, updatedFields) => {
     const response = await apiClient.put(`${UPDATE}/${id}`, updatedFields);
     return response.data;
   } catch (error) {
-    console.error('Failed to update recipe', error);
-    throw error;
+    return error;
   }
 };
 

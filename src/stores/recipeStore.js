@@ -4,7 +4,7 @@ import socket from '@/socket/socket'
 
 export const useRecipeStore = defineStore('recipe', {
   state: () => ({
-    recipes: [], // Перейменовано для більшої ясності
+    recipes: [],
     isLoading: false,
     error: null,
   }),
@@ -34,12 +34,8 @@ export const useRecipeStore = defineStore('recipe', {
     // Оновити статус перевірки рецепта
     async toggleRecipeCheckStatus(recipeId, fields) {
       try {
-        console.log('fields', fields);
-
         // Оновлюємо рецепт через сервер
         const response = await updateRecipe(recipeId, fields);
-
-        console.log('response', response);
 
         if (!response) {
           this.error = 'Failed to update recipe status';
@@ -113,13 +109,11 @@ export const useRecipeStore = defineStore('recipe', {
       });
     },
 
-
     // Відправка оновлення через WebSocket
     updateRecipeStatus(id, updatedFields) {
       console.log('Updating recipe status:', id, updatedFields);
       socket.emit('updateRecipe', { id, ...updatedFields });
     },
-
   },
 
   getters: {

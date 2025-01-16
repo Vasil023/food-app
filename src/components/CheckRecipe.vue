@@ -86,35 +86,34 @@ const updatePointInUser = async (id, userId, point) => {
       <span class="pi pi-spin pi-spinner" style="font-size: 0.8rem"></span>
     </div>
 
-    <div class="flex justify-between items-end pt-4 px-2 border-t">
-      <span @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)" class="pi pi-times">
-      </span>
+    <div class="flex justify-between items-end pt-3 px-2 border-t">
+      <button
+        @click="removeRecipe(props.item._id, props.item.isChecked ? false : true)"
+        class="pi pi-times overlay"
+      ></button>
 
-      <span
+      <button
         v-if="userStore.userId === props.item.user._id && props.item.isDone"
-        class="pi pi-check cursor-pointer"
-        style="font-size: 1.3rem; color: #5a382d"
+        class="pi pi-check cursor-pointer overlay"
+        style="font-size: 1.2rem; color: #5a382d"
         @click="updatePointInUser(props.item.point, props.item._id)"
-      >
-      </span>
+      ></button>
 
       <!-- Підтверджено що інший юзер приготував -->
-      <span
+      <button
         v-if="userStore.userId !== props.item.userCooked?._id && props.item.isCooking"
-        class="pi pi-check cursor-pointer"
-        style="font-size: 1.3rem; color: #5a382d"
+        class="pi pi-check cursor-pointer overlay"
+        style="font-size: 1.2rem; color: #5a382d"
         @click="updatePointInUser(props.item._id, props.item.userCooked?._id, props.item.point)"
-      >
-      </span>
+      ></button>
 
       <!-- Підтвердження що юзер бере рецепт приготування -->
-      <span
+      <button
         v-if="!props.item.isCooking"
-        class="pi pi-check cursor-pointer"
-        style="font-size: 1.3rem; color: #5a382d"
+        class="pi pi-check cursor-pointer overlay"
+        style="font-size: 1.2rem; color: #5a382d"
         @click="checkRecipeIsCooking(props.item._id, props.item.isCooking ? false : true)"
-      >
-      </span>
+      ></button>
 
       <span
         v-if="props.item.isCooking && userStore.userId === props.item.userCooked?._id"

@@ -22,7 +22,6 @@ const registerUser = async () => {
   if (userStore.error) {
     error.value = userStore.error;
   } else {
-    console.log("userStore.error", userStore.error);
     await loginUser(email.value, password.value);
     route.push("/");
   }

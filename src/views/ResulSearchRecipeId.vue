@@ -3,16 +3,11 @@ import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useSearchRecipeStore } from "@/stores/searchRecipe";
 
-// import { translateIngredient } from "@/utils/translate";
+import SpinerIcon from "@/components/Spiner-icon.vue";
 
 const searchRecipeStore = useSearchRecipeStore();
 
 const route = useRoute();
-
-// const translateText = async (text) => {
-//   const translatedText = await translateIngredient(text, "en", "uk");
-//   return translatedText;
-// };
 
 onMounted(() => {
   const id = route.params.id;
@@ -41,13 +36,6 @@ onMounted(() => {
         </ol>
       </div>
     </div>
-
-    <div v-if="searchRecipeStore.isLoading">
-      <div class="grid place-items-center h-[calc(100vh-180px)]">
-        <div class="grid place-items-center gap-4">
-          <span class="pi pi-spin pi-spinner" style="font-size: 3rem; color: #5a382d"></span>
-        </div>
-      </div>
-    </div>
+    <SpinerIcon v-if="searchRecipeStore.isLoading" />
   </div>
 </template>
