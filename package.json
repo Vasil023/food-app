@@ -1,0 +1,11 @@
+{
+  "name": "food-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd client && npm i && npm run dev\" \"cd server && npm i && npm run start\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

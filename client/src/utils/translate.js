@@ -1,4 +1,5 @@
 import { translateClient } from "@/api/axios";
+import { toast } from "vue3-toastify";
 
 export const translateText = async (text, source, target) => {
   try {
@@ -13,7 +14,7 @@ export const translateText = async (text, source, target) => {
     );
     return response.data.data.translations[0].translatedText;
   } catch (error) {
-    console.error(error);
+    toast.error("Помилка при пошуку");
     throw error;
   }
 }

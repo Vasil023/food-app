@@ -76,7 +76,7 @@ const createRecipe = async (data) => {
           <input
             class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 border rounded-md px-3 py-2"
             :class="{ 'border-red-500': error?.type === 'title' }"
-            placeholder="Type here..."
+            placeholder="Назва рецепту"
             v-model="title"
           />
           <span v-if="error?.type === 'title'" class="text-red-500 text-xs mt-1">
@@ -88,7 +88,7 @@ const createRecipe = async (data) => {
           <label for="email" class="mb-2 block text-base font-medium text-[#07074D]"> Опис </label>
           <input
             class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-            placeholder="Type here..."
+            placeholder="Опис рецепту"
             v-model="description"
           />
         </div>
@@ -99,7 +99,7 @@ const createRecipe = async (data) => {
             class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 border rounded-md px-3 py-2 transition duration-300 ease focus:outline-none shadow-sm focus:shadow"
             :class="{ 'border-red-500': error?.type === 'point' }"
             type="number"
-            placeholder="Type here..."
+            placeholder="Поінти"
             v-model="point"
           />
           <span v-if="error?.type === 'point'" class="text-red-500 text-xs mt-1">
@@ -121,8 +121,8 @@ const createRecipe = async (data) => {
               class="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
             >
               <div>
-                <span class="mb-2 block text-xl font-semibold text-[#07074D]"> Drop files here </span>
-                <span class="mb-2 block text-base font-medium text-[#6B7280]"> Or </span>
+                <span class="mb-2 block text-xl font-semibold text-[#07074D]"> Перетягніть файл сюди </span>
+                <span class="mb-2 block text-base font-medium text-[#6B7280]"> Або </span>
                 <span
                   class="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]"
                 >

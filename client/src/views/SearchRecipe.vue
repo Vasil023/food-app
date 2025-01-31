@@ -63,6 +63,7 @@ watch(ingredient, (newValue) => {
 
 // Submit handler for search
 const sendIngredient = () => {
+  if (!ingredient.value.length < 3) return;
   searchRecipeStore.searchRecipe(ingredient.value);
 };
 </script>
@@ -78,7 +79,7 @@ const sendIngredient = () => {
           placeholder="Хліб, яйце"
           v-model="ingredient"
         />
-        <button class="button">Пошук</button>
+        <button class="button" :class="{ disabled: ingredient.length < 3 }">Пошук</button>
       </form>
 
       <div v-if="searchRecipeStore.allRecipe.length && !searchRecipeStore.isLoading" class="mt-7">

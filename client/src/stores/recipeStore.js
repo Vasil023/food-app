@@ -18,8 +18,8 @@ export const useRecipeStore = defineStore('recipe', {
       try {
         const response = await createRecipe(recipeData)
 
-        if (!response) {
-          this.error = response?.data?.message || 'Failed to create recipe'
+        if (response.status === 400) {
+          this.error = response?.response?.data
           return
         }
 
