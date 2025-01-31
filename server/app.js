@@ -21,7 +21,7 @@ const server = http.createServer(app);
 // Налаштування WebSocket (Socket.io)
 const io = new Server(server, {
   cors: {
-    origin: 'https://nyama.netlify.app/', // Домен вашого клієнта
+    origin: '*', // Домен вашого клієнта
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   },
 });

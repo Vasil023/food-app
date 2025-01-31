@@ -96,7 +96,6 @@ export const useRecipeStore = defineStore('recipe', {
     // Ініціалізація WebSocket
     initSocket() {
       socket.on('recipeUpdated', (updatedRecipe) => {
-
         const index = this.recipes.findIndex((r) => r._id === updatedRecipe._id);
         if (index !== -1) {
           this.recipes[index] = updatedRecipe; // Оновлюємо рецепт у списку
@@ -111,7 +110,6 @@ export const useRecipeStore = defineStore('recipe', {
 
     // Відправка оновлення через WebSocket
     updateRecipeStatus(id, updatedFields) {
-      console.log('Updating recipe status:', id, updatedFields);
       socket.emit('updateRecipe', { id, ...updatedFields });
     },
   },

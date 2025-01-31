@@ -1,5 +1,5 @@
-const Recipe = require('../models/Recipe'); // Підключення моделі Recipe
 const User = require('../models/User');
+const Recipe = require('../models/Recipe');
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
@@ -7,7 +7,6 @@ module.exports = (io) => {
 
     // Обробник для оновлення рецепту
     socket.on('updateRecipe', async ({ id, ...updatedFields }) => {
-      console.log('Received updateRecipe event:', { id, updatedFields });
 
       try {
         const updatedRecipe = await Recipe.findByIdAndUpdate(
@@ -17,8 +16,7 @@ module.exports = (io) => {
         );
 
         if (updatedRecipe) {
-          console.log('Recipe updated successfully:', updatedRecipe);
-          io.emit('recipeUpdated', updatedRecipe); // Відправляємо всім клієнтам
+          io.emit('recipeUpdated', updatedRecipe);
         } else {
           console.log('Recipe not found for ID:', id);
         }
@@ -45,8 +43,6 @@ module.exports = (io) => {
           console.log('User not found for ID:', userId);
           return;
         }
-
-        console.log(`User ${userId} updated successfully with new points:`, updatedUser.point);
 
         // Відправляємо оновлені дані користувача всім клієнтам
         io.emit('userUpdated', updatedUser);

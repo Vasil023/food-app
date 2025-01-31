@@ -8,6 +8,8 @@ import SpinerIcon from "@/components/Spiner-icon.vue";
 const recipeStore = useRecipeStore();
 const userStore = useUserStore();
 
+recipeStore.initSocket();
+
 const checkRecipe = async (id, isChecked) => {
   recipeStore.updateRecipeStatus(id, { user: { _id: userStore.userId }, isChecked: isChecked });
 };
