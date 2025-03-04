@@ -13,8 +13,11 @@ export const useRecipeStore = defineStore('recipe', {
     // Додати новий рецепт
     async addRecipe(recipeData) {
       this.isLoading = true
-      this.error = null
       const test = null
+      const test = null
+      const test = null
+      const test = null
+      this.error = null
       try {
         const response = await createRecipe(recipeData)
 

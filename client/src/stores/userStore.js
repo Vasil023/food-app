@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
     email: null,
     error: null,
     isLoading: false,
+    socket,
   }),
 
   actions: {
