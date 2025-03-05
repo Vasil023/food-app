@@ -14,7 +14,7 @@ export const useRecipeStore = defineStore('recipe', {
     async addRecipe(recipeData) {
       this.isLoading = true
       this.error = null
-      const test = null
+      const test = 'Тут зміні в main перед merge request'
       try {
         const response = await createRecipe(recipeData)
 
